@@ -1,0 +1,6 @@
+# OS garbage
+.DS_store
+thumbs.db
+
+# Temporary folders
+/tmp/*
