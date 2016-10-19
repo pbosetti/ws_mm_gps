@@ -6,5 +6,5 @@ Project description **here**.
 
 This is the intro for this beautiful project.
 
-## Description of the algorithm
-
+## Authors
+Many PhD Students 
