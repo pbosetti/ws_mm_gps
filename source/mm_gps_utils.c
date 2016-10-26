@@ -7,7 +7,7 @@ uint16_t CRC16(const void *buf, size_t buflen) {
   uint8_t *arr = (uint8_t *)buf;
   bytes_t crc;
   crc.w = 0xffff;
-  while (length--) {
+  while (buflen--) {
     char i;
     uint16_t odd;
     crc.b.lo ^= *arr++;
