@@ -37,11 +37,11 @@ BEGIN:
   for (i = 0; i < MMGPS_MAX_PACKET_LEN; i++) {
     *gps->buffer.head = (*gps->get_next_char)(gps->userdata);
     gps->buffer.head++;
-    if (memcmp(gps->buffer.head-MMGPS_SEPLEN, MMGPS_SEPARATOR, MM_GPS_SEPLEN) == 0) {
-      if (gps->buffer.packet.hedge.code == HEDGEHOG && BUFLEN(gps) < (MM_GPS_SEPLEN+21+MM_GPS_SEPLEN)) {
+    if (memcmp(gps->buffer.head-MMGPS_SEPLEN, MMGPS_SEPARATOR, MMGPS_SEPLEN) == 0) {
+      if (gps->buffer.packet.hedge.code == HEDGEHOG && BUFLEN(gps) < (MMGPS_SEPLEN+21+MMGPS_SEPLEN)) {
         // NO-OP (packet incomplete)
       }
-      else if (gps->buffer.packet.hedge.code == FROZEN && BUFLEN(gps) < (MM_GPS_SEPLEN+4+gps->buffer.packet.beacons.n_beacons*8+2+MM_GPS_SEPLEN)) {
+      else if (gps->buffer.packet.hedge.code == FROZEN && BUFLEN(gps) < (MMGPS_SEPLEN+4+gps->buffer.packet.beacons.n_beacons*8+2+MMGPS_SEPLEN)) {
         // NO-OP (packet incomplete)
       }
       else {
@@ -54,7 +54,7 @@ BEGIN:
     result = 0;
     gps->buffer.crc16 = -1;
     memset(gps->buffer.packet.b, 0, MMGPS_MAX_PACKET_LEN);
-    strncpy(gps->buffer.packet.b, MMGPS_SEPARATOR, MM_GPS_SEPLEN);
+    strncpy(gps->buffer.packet.b, MMGPS_SEPARATOR, MMGPS_SEPLEN);
     gps->buffer.head = gps->buffer.packet.b + MMGPS_SEPLEN;
   }
   else { // Packet starts with sep: deal with it!
@@ -72,28 +72,28 @@ double mm_gps_time(mm_gps * gps) {
   if (gps->buffer.crc16 != 0 || gps->buffer.packet.hedge.code == FROZEN) {
     return 0.0;
   }
-  return gps->buffer.packet.hedge.time / 64.0;
+  return gps->buffer.packet.hedge.time / 64.0; // Endianess??
 }
 
 double mm_gps_x(mm_gps * gps) {
   if (gps->buffer.crc16 != 0 || gps->buffer.packet.hedge.code == FROZEN) {
     return 0.0;
   }
-  return gps->buffer.packet.hedge.x / 100.0;
+  return gps->buffer.packet.hedge.x / 100.0; // Endianess ??
 }
 
 double mm_gps_y(mm_gps * gps) {
   if (gps->buffer.crc16 != 0 || gps->buffer.packet.hedge.code == FROZEN) {
     return 0.0;
   }
-  return gps->buffer.packet.hedge.y / 100.0;
+  return gps->buffer.packet.hedge.y / 100.0; // Endianess??
 }
 
 double mm_gps_z(mm_gps * gps) {
   if (gps->buffer.crc16 != 0 || gps->buffer.packet.hedge.code == FROZEN) {
     return 0.0;
   }
-  return gps->buffer.packet.hedge.z / 100.0;
+  return gps->buffer.packet.hedge.z / 100.0; // Endianess??
 }
 
 void mm_gps_coords(mm_gps *gps, double * coords) {
