@@ -4,7 +4,6 @@
 #include <string.h>
 
 #include "mm_gps_beacon.h"
-#include "mm_gps_utils.h"
 
 
 

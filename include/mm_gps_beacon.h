@@ -9,6 +9,9 @@
 #include <stdint.h>
 #include <sys/types.h>
 
+#include "mm_gps_utils.h"
+
+
 #define MMGPS_NUMBER_OF_BEACONS 5
 #define MMGPS_SEPARATOR "\xFFG"
 #define MMGPS_SEPLEN 2
