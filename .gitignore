@@ -4,3 +4,5 @@ thumbs.db
 
 # Temporary folders
 /tmp/*
+/build/*
+!/build/.gitkeep
