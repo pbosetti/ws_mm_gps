@@ -19,6 +19,7 @@
 
 typedef char (*mm_gps_char_getter)(void *data);
 
+// Buffer parsing structure
 typedef union {
   char b[MMGPS_MAX_PACKET_LEN];
   
@@ -54,7 +55,7 @@ typedef union {
   
 } mm_gps_packet;
 
-
+// "Object" structure
 typedef struct {
   struct __attribute__((packed)) {
     mm_gps_packet packet;
@@ -66,12 +67,16 @@ typedef struct {
 } mm_gps;
 
 
+// mm_gps constructor
 mm_gps * mm_gps_init(void *data);
 
+// mm_gps destructor
 void mm_gps_free(mm_gps *gps);
 
+// Sets the char reader function
 void mm_gps_set_reader(mm_gps *gps, mm_gps_char_getter f);
 
+// Parses next raw packet
 uint16_t mm_gps_next_raw_packet(mm_gps *gps);
 
 double mm_gps_time(mm_gps * gps);
