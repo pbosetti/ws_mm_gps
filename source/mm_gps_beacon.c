@@ -13,7 +13,7 @@
 // mm_gps constructor
 mm_gps * mm_gps_init(void *data) {
   mm_gps *gps = (mm_gps*)malloc(sizeof(mm_gps));
-  memset(gps, 0, sizeof(gps));
+  memset(gps, 0, sizeof(mm_gps));
   gps->buffer.head = gps->buffer.packet.b;
   gps->userdata = data;
   return gps;
