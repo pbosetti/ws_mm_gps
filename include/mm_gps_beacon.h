@@ -15,6 +15,10 @@
 
 #define MMGPS_MAX_PACKET_LEN MMGPS_SEPLEN + 4 + MMGPS_NUMBER_OF_BEACONS * 8 + 2 + MMGPS_SEPLEN
 
+typedef enum {
+  HEDGEHOG = 1;
+  FROZEN
+} mm_gps_packet_codes;
 
 
 typedef char (*mm_gps_char_getter)(void *data);
