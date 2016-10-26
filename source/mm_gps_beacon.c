@@ -10,6 +10,20 @@
 
 #define BUFLEN(gps) gps->buffer.head - gps->buffer.packet.b
 
+#if !(defined(BYTE_ORDER) || defined(__BYTE_ORDER__))
+#error "CCannot figure out byte order on the target platform"
+#endif
+
+#if (defined(BYTE_ORDER) && (BYTE_ORDER == BIG_ENDIAN)) || (defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__))
+#define SWAP16(num) ((num & 0xff) >> 8) | (num << 8)
+#define SWAP32(num) ((num & 0xff000000) >> 24) | ((num & 0x00ff0000) >> 8) | ((num & 0x0000ff00) << 8) | (num << 24)
+#else
+#define SWAP16(num) num
+#define SWAP32(num) num
+#endif
+
+
+
 // mm_gps constructor
 mm_gps * mm_gps_init(void *data) {
   mm_gps *gps = (mm_gps*)malloc(sizeof(mm_gps));
@@ -72,28 +86,28 @@ double mm_gps_time(mm_gps * gps) {
   if (gps->buffer.crc16 != 0 || gps->buffer.packet.hedge.code == FROZEN) {
     return 0.0;
   }
-  return gps->buffer.packet.hedge.time / 64.0; // Endianess??
+  return SWAP32(gps->buffer.packet.hedge.time) / 64.0; // Endianess??
 }
 
 double mm_gps_x(mm_gps * gps) {
   if (gps->buffer.crc16 != 0 || gps->buffer.packet.hedge.code == FROZEN) {
     return 0.0;
   }
-  return gps->buffer.packet.hedge.x / 100.0; // Endianess ??
+  return SWAP16(gps->buffer.packet.hedge.x) / 100.0; // Endianess ??
 }
 
 double mm_gps_y(mm_gps * gps) {
   if (gps->buffer.crc16 != 0 || gps->buffer.packet.hedge.code == FROZEN) {
     return 0.0;
   }
-  return gps->buffer.packet.hedge.y / 100.0; // Endianess??
+  return SWAP16(gps->buffer.packet.hedge.y) / 100.0; // Endianess??
 }
 
 double mm_gps_z(mm_gps * gps) {
   if (gps->buffer.crc16 != 0 || gps->buffer.packet.hedge.code == FROZEN) {
     return 0.0;
   }
-  return gps->buffer.packet.hedge.z / 100.0; // Endianess??
+  return SWAP16(gps->buffer.packet.hedge.z) / 100.0; // Endianess??
 }
 
 void mm_gps_coords(mm_gps *gps, double * coords) {
@@ -101,3 +115,5 @@ void mm_gps_coords(mm_gps *gps, double * coords) {
   coords[1] = mm_gps_y(gps);
   coords[2] = mm_gps_z(gps);
 }
+
+
